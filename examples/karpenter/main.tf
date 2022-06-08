@@ -2,13 +2,13 @@ provider "aws" {
   region = local.region
 }
 
-data "aws_partition" "current" {}
+
 
 locals {
   name            = "ex-${replace(basename(path.cwd), "_", "-")}"
   cluster_version = "1.22"
   region          = "eu-west-1"
-  partition       = data.aws_partition.current.partition
+  partition       = "aws"
 
   tags = {
     Example    = local.name

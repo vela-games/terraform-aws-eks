@@ -1,4 +1,4 @@
-data "aws_partition" "current" {}
+
 
 locals {
   create = var.create && var.putin_khuylo
@@ -191,13 +191,13 @@ resource "aws_iam_openid_connect_provider" "oidc_provider" {
 locals {
   create_iam_role   = local.create && var.create_iam_role
   iam_role_name     = coalesce(var.iam_role_name, "${var.cluster_name}-cluster")
-  policy_arn_prefix = "arn:${data.aws_partition.current.partition}:iam::aws:policy"
+  policy_arn_prefix = "arn:aws:iam::aws:policy"
 
   cluster_encryption_policy_name = coalesce(var.cluster_encryption_policy_name, "${local.iam_role_name}-ClusterEncryption")
 
   # TODO - hopefully this can be removed once the AWS endpoint is named properly in China
   # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1904
-  dns_suffix = coalesce(var.cluster_iam_role_dns_suffix, data.aws_partition.current.dns_suffix)
+  dns_suffix = coalesce(var.cluster_iam_role_dns_suffix, "amazonaws.com")
 }
 
 data "aws_iam_policy_document" "assume_role_policy" {
